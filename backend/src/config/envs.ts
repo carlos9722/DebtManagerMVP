@@ -8,6 +8,7 @@ export const envs = {
   POSTGRES_URL: env.get('POSTGRES_URL').required().asString(),
   POSTGRES_DB: env.get('POSTGRES_DB').required().asString(),
   NODE_ENV: env.get('NODE_ENV').required().asString(),
+  JWT_SEED: env.get('JWT_SEED').required().asString(),
 
 
 }

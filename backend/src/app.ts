@@ -11,13 +11,13 @@ import { PostgresDatabase } from './data/postgres';
 
 async function main() {
 
-  //* Database initialization
+  //* Inicialización de la base de datos
   await PostgresDatabase.connect({
     url: envs.POSTGRES_URL,
     dbName: envs.POSTGRES_DB,
   });
 
-  //* Server initialization
+  //* Inicialización del servidor
   const server = new Server({
     port: envs.PORT,
     routes: AppRoutes.routes,
