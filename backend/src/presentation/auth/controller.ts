@@ -17,6 +17,7 @@ export class AuthController {
         return res.status(500).json({error: 'Error interno del servidor'});
     }
 
+    // Registrar un usuario
     registerUser = (req: Request, res: Response) => {  
         const [error, registerUserDto] = RegisterUserDto.create(req.body);
         if ( error ) return res.status(400).json({error})
@@ -26,6 +27,7 @@ export class AuthController {
          .catch( error => this.handleError(error, res) );
     }
 
+    // Iniciar sesión
     loginUser = (req: Request, res: Response) => {
         const [error, loginUserDto] = LoginUserDto.create(req.body);
         if ( error ) return res.status(400).json({error})
@@ -35,8 +37,13 @@ export class AuthController {
          .catch( error => this.handleError(error, res) );
     }
 
+    // Validar email
     validateEmailUser = (req: Request, res: Response) => {
-        res.json({ message: 'Validate email ' });
+        const { token } = req.params;
+
+        this.authService.validateEmail(token)
+         .then( () => res.status(200).json({message: 'Email validado correctamente'}) )
+         .catch( error => this.handleError(error, res) );
     }
 
 }
