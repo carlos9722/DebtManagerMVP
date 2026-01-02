@@ -19,4 +19,8 @@ export const envs = {
   
   WEBSERVICE_URL: env.get('WEBSERVICE_URL').required().asString(),
 
+  REDIS_HOST: env.get('REDIS_HOST').default('localhost').asString(),
+  REDIS_PORT: env.get('REDIS_PORT').default('6379').asPortNumber(),
+  REDIS_PASSWORD: env.get('REDIS_PASSWORD').default('').asString(),
+
 }

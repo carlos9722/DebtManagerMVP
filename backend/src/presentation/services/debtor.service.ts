@@ -23,6 +23,7 @@ export class DebtorService {
   public async getDebtors() {
     try {
       const debtors = await Debtor.find({
+        relations: ['debts'],
         order: { createdAt: 'DESC' },
       });
       return debtors;
@@ -35,7 +36,8 @@ export class DebtorService {
   public async getDebtorById(id: string) {
     try {
       const debtor = await Debtor.findOne({
-        where: { id }
+        where: { id },
+        relations: ['debts']
       });
 
       if (!debtor) {

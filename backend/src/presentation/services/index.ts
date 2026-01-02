@@ -1,3 +1,4 @@
 export * from './auth.service';
 export * from './email.service';
 export * from './debtor.service';
+export * from './debt.service';

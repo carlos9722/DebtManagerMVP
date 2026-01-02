@@ -4,8 +4,10 @@ import {
     Column, 
     CreateDateColumn, 
     UpdateDateColumn,
+    OneToMany,
     BaseEntity
   } from 'typeorm';
+  import { Debt } from './debt.entity';
   
   @Entity('debtors')
   export class Debtor extends BaseEntity {
@@ -24,6 +26,9 @@ import {
   
     @Column('text', { nullable: true })
     notes?: string;
+  
+    @OneToMany(() => Debt, (debt) => debt.debtor)
+    debts!: Debt[];
   
     @CreateDateColumn({ type: 'timestamp' })
     createdAt!: Date;
