@@ -13,4 +13,4 @@ yarn-error.log
 dist/
 
 # Carpeta de datos de PostgreSQL creada por Docker
-postgres/
+/postgres/
