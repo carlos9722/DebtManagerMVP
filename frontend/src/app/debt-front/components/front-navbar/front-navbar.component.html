@@ -17,15 +17,29 @@
           />
         </svg>
       </div>
-     
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a routerLink="/debt" routerLinkActive="active">Dashboard</a></li>
+        <li><a routerLink="/debt/debtors" routerLinkActive="active">Deudores</a></li>
+      </ul>
     </div>
-    <a routerLink="/" class="btn btn-ghost text-xl font-montserrat">
+    <a routerLink="/debt" class="btn btn-ghost text-xl font-montserrat">
       Debt
       <span class="text-secondary">| Manager</span>
     </a>
   </div>
   <div class="navbar-center hidden lg:flex">
-    
+    <ul class="menu menu-horizontal px-1 gap-2">
+      <li>
+        <a routerLink="/debt" routerLinkActive="active" class="btn btn-ghost">
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/debt/debtors" routerLinkActive="active" class="btn btn-ghost">
+          Deudores
+        </a>
+      </li>
+    </ul>
   </div>
   <div class="navbar-end gap-4">
     @if ( authService.authStatus() === 'authenticated' ) {

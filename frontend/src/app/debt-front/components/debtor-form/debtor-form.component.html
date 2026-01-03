@@ -1,0 +1,122 @@
+<form
+  class="flex flex-col gap-4"
+  [formGroup]="debtorForm"
+  (ngSubmit)="handleSubmit()"
+>
+  <!-- Nombre -->
+  <div>
+    <label
+      class="input input-bordered flex items-center gap-2 transition-all duration-200 focus-within:border-secondary focus-within:shadow-md focus-within:shadow-secondary/20"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        class="h-4 w-4 text-slate-400 sm:h-5 sm:w-5"
+      >
+        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.214 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+      </svg>
+      <input
+        type="text"
+        class="grow bg-transparent outline-none"
+        placeholder="Nombre *"
+        formControlName="name"
+      />
+    </label>
+    @if (getFieldError('name')) {
+      <p class="mt-1 text-xs text-error">{{ getFieldError('name') }}</p>
+    }
+  </div>
+
+  <!-- Email -->
+  <div>
+    <label
+      class="input input-bordered flex items-center gap-2 transition-all duration-200 focus-within:border-secondary focus-within:shadow-md focus-within:shadow-secondary/20"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        class="h-4 w-4 text-slate-400 sm:h-5 sm:w-5"
+      >
+        <path
+          d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
+        />
+        <path
+          d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
+        />
+      </svg>
+      <input
+        type="email"
+        class="grow bg-transparent outline-none"
+        placeholder="Correo electrónico"
+        formControlName="email"
+      />
+    </label>
+    @if (getFieldError('email')) {
+      <p class="mt-1 text-xs text-error">{{ getFieldError('email') }}</p>
+    }
+  </div>
+
+  <!-- Teléfono -->
+  <div>
+    <label
+      class="input input-bordered flex items-center gap-2 transition-all duration-200 focus-within:border-secondary focus-within:shadow-md focus-within:shadow-secondary/20"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 16 16"
+        fill="currentColor"
+        class="h-4 w-4 text-slate-400 sm:h-5 sm:w-5"
+      >
+        <path
+          d="M8 1a4 4 0 0 0-4 4v.5h8V5a4 4 0 0 0-4-4ZM5.5 6.5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7Zm5 0a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7Z"
+        />
+        <path
+          d="M3.5 5.5A2.5 2.5 0 0 1 6 3h4a2.5 2.5 0 0 1 2.5 2.5V14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5.5Z"
+        />
+      </svg>
+      <input
+        type="tel"
+        class="grow bg-transparent outline-none"
+        placeholder="Teléfono"
+        formControlName="phone"
+      />
+    </label>
+    @if (getFieldError('phone')) {
+      <p class="mt-1 text-xs text-error">{{ getFieldError('phone') }}</p>
+    }
+  </div>
+
+  <!-- Notas -->
+  <div>
+    <textarea
+      class="textarea textarea-bordered w-full transition-all duration-200 focus:border-secondary focus:shadow-md focus:shadow-secondary/20"
+      placeholder="Notas"
+      formControlName="notes"
+      rows="3"
+    ></textarea>
+    @if (getFieldError('notes')) {
+      <p class="mt-1 text-xs text-error">{{ getFieldError('notes') }}</p>
+    }
+  </div>
+
+  <!-- Botones -->
+  <div class="flex gap-3 mt-2">
+    <button
+      type="submit"
+      class="btn btn-secondary flex-1 shadow-lg shadow-secondary/25 transition-all duration-200 hover:shadow-xl hover:shadow-secondary/30 active:scale-[0.98]"
+      [disabled]="debtorForm.invalid"
+    >
+      {{ debtor() ? 'Actualizar' : 'Crear' }} Deudor
+    </button>
+    <button
+      type="button"
+      class="btn btn-outline"
+      (click)="handleCancel()"
+    >
+      Cancelar
+    </button>
+  </div>
+</form>
+

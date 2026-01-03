@@ -28,6 +28,9 @@ export class AuthService {
   user = computed(() => this._user());
   token = computed(() => this._token());
 
+   /**
+   * Login
+   */
   login(email: string, password: string): Observable<boolean> {
     return this.http.post<AuthResponse>(`${baseUrl}/auth/login`, {
       email,
@@ -39,6 +42,9 @@ export class AuthService {
       );
   }
 
+   /**
+   * Registra un usuario
+   */
   register(name: string, email: string, password: string): Observable<boolean> {
     return this.http.post<AuthResponse>(`${baseUrl}/auth/register`, {
       name,
@@ -51,6 +57,9 @@ export class AuthService {
       );
   }
 
+   /**
+   * Valida Email con Token
+   */
   validateEmail(token: string): Observable<{ message: string }> {
     return this.http.get<{ message: string }>(`${baseUrl}/auth/validate-email/${token}`)
       .pipe(
@@ -61,6 +70,9 @@ export class AuthService {
       );
   }
 
+   /**
+   * Logout
+   */
   logout() {
     this._user.set(null);
     this._token.set(null);

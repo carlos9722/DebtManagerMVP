@@ -12,6 +12,9 @@ const baseUrl = environment.baseUrl;
 export class DebtService {
   private http = inject(HttpClient);
 
+   /**
+   * Obtiene las estadisticas del dashboard
+   */
   getStatistics(): Observable<DebtStatistics> {
     return this.http.get<DebtStatistics>(`${baseUrl}/debts/statistics`)
       .pipe(

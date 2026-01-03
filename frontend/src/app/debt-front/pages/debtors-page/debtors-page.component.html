@@ -1,0 +1,98 @@
+<div class="bg-base-200 py-6 px-4 sm:px-6 lg:px-8">
+  <!-- Título y botón crear -->
+  <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-800 sm:text-4xl">Gestión de Deudores</h1>
+      <p class="mt-2 text-sm text-slate-600 sm:text-base">Administra tus deudores</p>
+    </div>
+    
+    @if (!showForm()) {
+      <button
+        class="btn btn-secondary gap-2 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+        (click)="openCreateForm()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+        Nuevo Deudor
+      </button>
+    }
+  </div>
+
+  <!-- Formulario -->
+  @if (showForm()) {
+    <div class="card bg-white border border-base-300 shadow-lg">
+      <div class="card-body">
+        <h2 class="card-title mb-4">
+          {{ editingDebtor() ? 'Editar Deudor' : 'Nuevo Deudor' }}
+        </h2>
+        <app-debtor-form
+          [debtor]="editingDebtor()"
+          (onSubmit)="handleFormSubmit($event)"
+          (onCancel)="handleFormCancel()"
+        />
+      </div>
+    </div>
+  }
+
+  <!-- Tabla de deudores -->
+  @else {
+    <div class="card bg-white border border-base-300 shadow-lg">
+      <div class="card-body">
+        <app-debtors-table
+          [debtors]="debtors()"
+          [isLoading]="isLoading()"
+          (onEdit)="handleEdit($event)"
+          (onDelete)="handleDelete($event)"
+        />
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Alerta de error -->
+@if(errorMessage()) {
+  <div
+    role="alert"
+    class="alert alert-error fixed bottom-4 left-1/2 w-[calc(100%-2rem)] max-w-xs -translate-x-1/2 animate-fadeIn shadow-xl sm:left-auto sm:right-5 sm:w-72 sm:max-w-none sm:translate-x-0"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 shrink-0 stroke-current"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span class="text-xs sm:text-sm">{{ errorMessage() }}</span>
+  </div>
+}
+
+<!-- Diálogo de confirmación -->
+<app-confirm-dialog
+  [isOpen]="showConfirmDialog()"
+  title="Confirmar eliminación"
+  [message]="'¿Estás seguro de eliminar a ' + (debtorToDelete()?.name || '') + '?'"
+  confirmText="Eliminar"
+  cancelText="Cancelar"
+  confirmButtonClass="btn-error"
+  (onConfirm)="confirmDelete()"
+  (onCancel)="cancelDelete()"
+/>
+

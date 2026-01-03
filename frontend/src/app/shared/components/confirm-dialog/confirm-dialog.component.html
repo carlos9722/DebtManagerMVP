@@ -1,0 +1,27 @@
+@if (isOpen()) {
+  <dialog class="modal modal-open">
+    <div class="modal-box">
+      <h3 class="font-bold text-lg">{{ title() }}</h3>
+      <p class="py-4">{{ message() }}</p>
+      <div class="modal-action">
+        <button
+          class="btn btn-ghost"
+          (click)="handleCancel()"
+        >
+          {{ cancelText() }}
+        </button>
+        <button
+          class="btn"
+          [ngClass]="confirmButtonClass()"
+          (click)="handleConfirm()"
+        >
+          {{ confirmText() }}
+        </button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop" (click)="handleCancel()">
+      <button>close</button>
+    </form>
+  </dialog>
+}
+
