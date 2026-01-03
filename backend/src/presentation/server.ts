@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
-
+import cors from 'cors';
+import { envs } from '../config';
 interface Options {
   port: number;
   routes: Router;
@@ -25,6 +26,13 @@ export class Server {
     
 
     //* Middlewares
+    this.app.use( cors({
+      origin: envs.FRONTEND_URL,
+      credentials: true,
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }));
+
     this.app.use( express.json() ); // raw
     this.app.use( express.urlencoded({ extended: true }) ); // x-www-form-urlencoded
 

@@ -23,4 +23,7 @@ export const envs = {
   REDIS_PORT: env.get('REDIS_PORT').default('6379').asPortNumber(),
   REDIS_PASSWORD: env.get('REDIS_PASSWORD').default('').asString(),
 
+  FRONTEND_URL: env.get('FRONTEND_URL').default('http://localhost:4200').asString(),
+
+
 }
