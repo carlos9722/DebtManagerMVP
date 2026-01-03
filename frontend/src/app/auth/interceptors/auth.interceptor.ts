@@ -7,12 +7,17 @@ import { AuthService } from "@auth/services/auth.service";
   Se ejecuta ANTES de que la petición HTTP salga al servidor
 */
 export function authInterceptor(
-  req: HttpRequest<unknown>, // Petición HTTP original
-  next: HttpHandlerFn        // Permite continuar con la petición
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn
 ) {
 
-    // Obtenemos el token desde el AuthService
+
     const token = inject(AuthService).token();
+
+    // Solo se agreaga token si existe
+    if (!token) {
+      return next(req);
+    }
 
     /*
       Las peticiones HTTP son inmutables (no se pueden modificar),
@@ -20,8 +25,8 @@ export function authInterceptor(
     */
     const newReq = req.clone({
       headers: req.headers.append(
-        'Authorization',       // Nombre del encabezado
-        `Bearer ${token}`      // Formato estándar para enviar el token
+        'Authorization',
+        `Bearer ${token}`
       ),
     });
 

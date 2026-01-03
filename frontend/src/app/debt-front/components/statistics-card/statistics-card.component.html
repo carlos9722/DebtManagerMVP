@@ -1,0 +1,35 @@
+<div class="card bg-white border border-base-300 shadow-lg transition-all duration-200 hover:shadow-xl">
+  <div class="card-body">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-medium text-slate-600">{{ title() }}</p>
+        <p 
+          class="mt-2 font-bold"
+          [ngClass]="{
+            'text-3xl': valueSize() === 'lg',
+            'text-2xl': valueSize() === 'sm',
+            'text-slate-800': valueColor() === 'slate-800',
+            'text-orange-600': valueColor() === 'orange-600',
+            'text-green-600': valueColor() === 'green-600',
+            'text-purple-600': valueColor() === 'purple-600',
+            'text-blue-600': valueColor() === 'blue-600'
+          }"
+        >
+          {{ value() }}
+        </p>
+      </div>
+      <div 
+        class="rounded-full p-3"
+        [ngClass]="{
+          'bg-blue-100': iconColor() === 'blue',
+          'bg-orange-100': iconColor() === 'orange',
+          'bg-green-100': iconColor() === 'green',
+          'bg-purple-100': iconColor() === 'purple'
+        }"
+      >
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+</div>
+

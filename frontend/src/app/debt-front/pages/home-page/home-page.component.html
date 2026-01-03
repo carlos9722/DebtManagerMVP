@@ -1,2 +1,260 @@
-<h1>Bienvenido al panel de deudas</h1>
-<p>Esta es la página de inicio del dashboard de deudas.</p>
+<div class="bg-base-200 py-6 px-4 sm:px-6 lg:px-8">
+  <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-slate-800 sm:text-4xl">Dashboard de Deudas</h1>
+      <p class="mt-2 text-sm text-slate-600 sm:text-base">Resumen general de tus deudas</p>
+    </div>
+    
+    <!-- Botones de exportación -->
+    <div class="flex gap-3">
+      <button
+        class="btn btn-outline btn-secondary gap-2 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+        [class.loading]="isExporting().csv"
+        [disabled]="isExporting().csv || isLoading()"
+        (click)="exportDebts('csv')"
+      >
+        @if (!isExporting().csv) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        }
+        Exportar CSV
+      </button>
+      
+      <button
+        class="btn btn-outline btn-secondary gap-2 transition-all duration-200 hover:shadow-lg active:scale-[0.98]"
+        [class.loading]="isExporting().json"
+        [disabled]="isExporting().json || isLoading()"
+        (click)="exportDebts('json')"
+      >
+        @if (!isExporting().json) {
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        }
+        Exportar JSON
+      </button>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  @if (statistics()) {
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Total de Deudas -->
+      <app-statistics-card
+        title="Total de Deudas"
+        [value]="statistics()!.totalDebts"
+        iconColor="blue"
+        valueColor="slate-800"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-blue-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
+        </svg>
+      </app-statistics-card>
+
+      <!-- Deudas Pendientes -->
+      <app-statistics-card
+        title="Deudas Pendientes"
+        [value]="statistics()!.pendingDebts"
+        iconColor="orange"
+        valueColor="orange-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-orange-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </app-statistics-card>
+
+      <!-- Deudas Pagadas -->
+      <app-statistics-card
+        title="Deudas Pagadas"
+        [value]="statistics()!.paidDebts"
+        iconColor="green"
+        valueColor="green-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-green-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </app-statistics-card>
+
+      <!-- Monto Total -->
+      <app-statistics-card
+        title="Monto Total"
+        [value]="'$' + statistics()!.totalAmount.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })"
+        iconColor="purple"
+        valueColor="slate-800"
+        valueSize="sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-purple-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </app-statistics-card>
+
+      <!-- Monto Pendiente -->
+      <app-statistics-card
+        title="Monto Pendiente"
+        [value]="'$' + statistics()!.pendingAmount.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })"
+        iconColor="orange"
+        valueColor="orange-600"
+        valueSize="sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-orange-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </app-statistics-card>
+
+      <!-- Monto Pagado -->
+      <app-statistics-card
+        title="Monto Pagado"
+        [value]="'$' + statistics()!.paidAmount.toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 })"
+        iconColor="green"
+        valueColor="green-600"
+        valueSize="sm"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6 text-green-600"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          />
+        </svg>
+      </app-statistics-card>
+    </div>
+  }
+
+  <!-- Estado de carga -->
+  @else if (isLoading()) {
+    <div class="flex items-center justify-center py-20">
+      <span class="loading loading-spinner loading-lg text-secondary"></span>
+    </div>
+  }
+
+  <!-- Error -->
+  @else if (errorMessage()) {
+    <div class="alert alert-error shadow-lg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6 shrink-0 stroke-current"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
+      </svg>
+      <div>
+        <h3 class="font-bold">Error al cargar las estadísticas</h3>
+        <div class="text-sm">{{ errorMessage() }}</div>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- Alerta de error para exportación -->
+@if(errorMessage()) {
+  <div
+    role="alert"
+    class="alert alert-error fixed bottom-4 left-1/2 w-[calc(100%-2rem)] max-w-xs -translate-x-1/2 animate-fadeIn shadow-xl sm:left-auto sm:right-5 sm:w-72 sm:max-w-none sm:translate-x-0"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-5 w-5 shrink-0 stroke-current"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <span class="text-xs sm:text-sm">{{ errorMessage() }}</span>
+  </div>
+}
