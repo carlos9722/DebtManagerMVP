@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { catchError, Observable, throwError } from "rxjs";
 import { environment } from 'src/environments/environment';
-import { CreateDebtor, Debtor, UpdateDebtor } from '../interfaces/debtor.interface';
+import { CreateDebtor, Debtor, DebtorWithDebts, UpdateDebtor } from '../interfaces/debtor.interface';
 
 const baseUrl = environment.baseUrl;
 
@@ -26,10 +26,10 @@ export class DebtorService {
   }
 
   /**
-   * Obtiene un deudor por su ID
+   * Obtiene un deudor por su ID con sus deudas
    */
-  getDebtorById(id: string): Observable<Debtor> {
-    return this.http.get<Debtor>(`${baseUrl}/debtors/listById/${id}`)
+  getDebtorById(id: string): Observable<DebtorWithDebts> {
+    return this.http.get<DebtorWithDebts>(`${baseUrl}/debtors/listById/${id}`)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           const message = error.error?.message || 'Error al obtener el deudor';

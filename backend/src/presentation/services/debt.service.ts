@@ -45,36 +45,6 @@ export class DebtService {
     }
   }
 
-  public async getDebtById(id: string) {
-    try {
-      const cacheKey = this.getCacheKey('detail', id);
-      
-      // Intentar obtener de caché
-      const cached = await cacheAdapter.get(cacheKey);
-      if (cached) {
-        return JSON.parse(cached);
-      }
-
-      const debt = await Debt.findOne({
-        where: { id },
-        relations: ['debtor'],
-      });
-
-      if (!debt) {
-        throw CustomError.notFound('Deuda no encontrada');
-      }
-
-      // Guardar en caché
-      await cacheAdapter.set(cacheKey, JSON.stringify(debt), this.CACHE_TTL);
-
-      return debt;
-
-    } catch (error) {
-      if (error instanceof CustomError) throw error;
-      throw CustomError.internalServer(`${error}`);
-    }
-  }
-
   public async updateDebt(updateDebtDto: UpdateDebtDto) {
     const { id, description, amount, dueDate } = updateDebtDto;
 
@@ -165,57 +135,9 @@ export class DebtService {
     }
   }
 
-  public async getDebtsByDebtorId(debtorId: string) {
-    try {
-      const cacheKey = this.getCacheKey('debtor', debtorId);
-      
-      // Intentar obtener de caché
-      const cached = await cacheAdapter.get(cacheKey);
-      if (cached) {
-        return JSON.parse(cached);
-      }
-
-      const debtor = await Debtor.findOneBy({ id: debtorId });
-      
-      if (!debtor) {
-        throw CustomError.notFound('Deudor no encontrado');
-      }
-
-      const debts = await Debt.find({
-        where: { debtorId },
-        order: { createdAt: 'DESC' },
-      });
-
-      const pending = debts.filter(d => !d.isPaid);
-      const paid = debts.filter(d => d.isPaid);
-
-      const result = {
-        debtor,
-        pending,
-        paid,
-        summary: {
-          totalDebts: debts.length,
-          pendingCount: pending.length,
-          paidCount: paid.length,
-          totalAmount: debts.reduce((sum, d) => sum + Number(d.amount), 0),
-          pendingAmount: pending.reduce((sum, d) => sum + Number(d.amount), 0),
-          paidAmount: paid.reduce((sum, d) => sum + Number(d.amount), 0),
-        }
-      };
-
-      // Guardar en caché
-      await cacheAdapter.set(cacheKey, JSON.stringify(result), this.CACHE_TTL);
-
-      return result;
-
-    } catch (error) {
-      if (error instanceof CustomError) throw error;
-      throw CustomError.internalServer(`${error}`);
-    }
-  }
 
   // Método para agregaciones
-  public async getAggregations() {
+  public async getStatistics() {
     try {
       const cacheKey = this.getCacheKey('aggregations');
       

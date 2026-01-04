@@ -1,3 +1,5 @@
+import { Debt } from './debt.interface';
+
 export interface Debtor {
   id: string;
   name: string;
@@ -6,6 +8,10 @@ export interface Debtor {
   notes?: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface DebtorWithDebts extends Debtor {
+  debts: Debt[];
 }
 
 export interface CreateDebtor {

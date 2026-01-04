@@ -26,22 +26,7 @@ export class DebtController {
       .then(debt => res.status(201).json(debt))
       .catch(error => this.handleError(error, res));
   };
-  
-  getDebtById = (req: Request, res: Response) => {
-    const { id } = req.params;
 
-    this.debtService.getDebtById(id)
-      .then(debt => res.json(debt))
-      .catch(error => this.handleError(error, res));
-  };
-
-  getDebtsByDebtor = (req: Request, res: Response) => {
-    const { debtorId } = req.params;
-
-    this.debtService.getDebtsByDebtorId(debtorId)
-      .then(result => res.json(result))
-      .catch(error => this.handleError(error, res));
-  };
 
   updateDebtById = (req: Request, res: Response) => {
     const { id } = req.params;
@@ -70,8 +55,8 @@ export class DebtController {
   };
 
   // Endpoint de agregaciones
-  getAggregations = (req: Request, res: Response) => {
-    this.debtService.getAggregations()
+  getStatistics = (req: Request, res: Response) => {
+    this.debtService.getStatistics()
       .then(result => res.json(result))
       .catch(error => this.handleError(error, res));
   };

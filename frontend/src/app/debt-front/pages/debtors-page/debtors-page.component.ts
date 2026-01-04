@@ -1,5 +1,6 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { DebtorService } from '../../services/debtor.service';
 import { Debtor, CreateDebtor } from '../../interfaces/debtor.interface';
 import { DebtorsTableComponent } from '../../components/debtors-table/debtors-table.component';
@@ -14,6 +15,7 @@ import { ConfirmDialogComponent } from '@shared/components/confirm-dialog/confir
 export class DebtorsPageComponent implements OnInit {
   private debtorService = inject(DebtorService);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
 
   debtors = signal<Debtor[]>([]);
   isLoading = signal<boolean>(true);
@@ -149,6 +151,13 @@ export class DebtorsPageComponent implements OnInit {
   handleFormCancel(): void {
     this.showForm.set(false);
     this.editingDebtor.set(null);
+  }
+
+  /**
+   * Navega a la página de deudas del deudor
+   */
+  handleViewDebts(debtor: Debtor): void {
+    this.router.navigate(['/debt/debtors', debtor.id, 'debts']);
   }
 }
 

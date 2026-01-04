@@ -1,0 +1,72 @@
+<form [formGroup]="debtForm" (ngSubmit)="handleSubmit()" class="space-y-4">
+  <!-- Descripción -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-medium">Descripción *</span>
+    </label>
+    <input
+      type="text"
+      formControlName="description"
+      class="input input-bordered w-full"
+      [class.input-error]="getFieldError('description')"
+      placeholder="Ej: Factura servicios - Marzo"
+    />
+    @if (getFieldError('description')) {
+      <label class="label">
+        <span class="label-text-alt text-error">{{ getFieldError('description') }}</span>
+      </label>
+    }
+  </div>
+
+  <!-- Monto -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-medium">Monto *</span>
+    </label>
+    <input
+      type="number"
+      formControlName="amount"
+      class="input input-bordered w-full"
+      [class.input-error]="getFieldError('amount')"
+      placeholder="0.00"
+      step="0.01"
+      min="0"
+    />
+    @if (getFieldError('amount')) {
+      <label class="label">
+        <span class="label-text-alt text-error">{{ getFieldError('amount') }}</span>
+      </label>
+    }
+  </div>
+
+  <!-- Fecha de Vencimiento -->
+  <div class="form-control">
+    <label class="label">
+      <span class="label-text font-medium">Fecha de Vencimiento</span>
+    </label>
+    <input
+      type="date"
+      formControlName="dueDate"
+      class="input input-bordered w-full"
+    />
+  </div>
+
+  <!-- Botones -->
+  <div class="flex justify-end gap-2 pt-4">
+    <button
+      type="button"
+      class="btn btn-ghost"
+      (click)="handleCancel()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="debtForm.invalid"
+    >
+      {{ debt() ? 'Actualizar' : 'Crear Deuda' }}
+    </button>
+  </div>
+</form>
+

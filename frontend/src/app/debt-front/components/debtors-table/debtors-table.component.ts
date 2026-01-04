@@ -12,5 +12,6 @@ export class DebtorsTableComponent {
   
   onEdit = output<Debtor>();
   onDelete = output<Debtor>();
+  onViewDebts = output<Debtor>();
 }
 
