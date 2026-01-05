@@ -166,4 +166,5 @@ Antes de comenzar, asegúrate de tener instalado:
 ## ⚠️ Notas Importantes
 
 - Asegúrate de que los puertos `3000` (backend), `4200` (frontend), `5432` (PostgreSQL) y `6379` (Redis) estén disponibles.
+- **Autenticación**: Para registrarse y hacer login, es necesario usar un correo electrónico real, ya que el sistema envía un correo de confirmación y validación que debe ser verificado para permitir el acceso al usuario.
 
